@@ -40,12 +40,6 @@ X 알고리즘 가중치 구현
 Phoenix Scorer 시뮬레이션
 실시간 분석 엔드포인트
 
-📦 GitHub 업로드 방법
-GitHub Pages에 업로드:
-https://github.com/hannahpark1995/tweet-analyzer 접속
-index.html 파일 수정
-tweet-analyzer-with-algorithm.html의 내용을 복사해서 붙여넣기
-Commit changes
 
 백엔드 실행 (선택사항):
 bash
