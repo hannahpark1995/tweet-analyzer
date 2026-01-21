@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UnitTX Tweet Analyzer</title>
+    <title>UnitTX Tweet Analyzer - X Algorithm</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -324,63 +324,182 @@
             margin-top: 0.5rem;
         }
         
-        /* Insights Section */
-        .insights-card {
-            background: linear-gradient(135deg, #fff9f2 0%, #faf6f0 100%);
+        /* X Algorithm Dashboard */
+        .algorithm-dashboard {
+            background: linear-gradient(135deg, #2c2319 0%, #3d3228 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            color: white;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .algorithm-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .algorithm-badge {
+            background: linear-gradient(135deg, #d4a574 0%, #c09764 100%);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .algorithm-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        
+        .score-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 2.5rem;
-            border: 1px solid rgba(212, 165, 116, 0.15);
-        }
-        
-        .insights-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #2c2319;
             margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            text-align: center;
         }
         
-        .insights-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+        .score-label {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
         }
         
-        .insight-item {
-            display: flex;
-            gap: 1.25rem;
-            align-items: flex-start;
-        }
-        
-        .insight-icon {
-            width: 56px;
-            height: 56px;
-            background: white;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-        
-        .insight-icon.green { color: #4ade80; }
-        .insight-icon.blue { color: #60a5fa; }
-        .insight-icon.purple { color: #c084fc; }
-        
-        .insight-content h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #2c2319;
+        .score-value {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #d4a574 0%, #f0c896 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.5rem;
         }
         
-        .insight-content p {
+        .score-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .predictions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .prediction-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        
+        .prediction-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .prediction-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .drivers-section {
+            margin-bottom: 2rem;
+        }
+        
+        .drivers-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .driver-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #d4a574;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .driver-name {
+            font-weight: 500;
+            color: white;
+        }
+        
+        .driver-impact {
+            background: rgba(212, 165, 116, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
             font-size: 0.875rem;
-            color: #6b5d4f;
+            font-weight: 600;
+            color: #d4a574;
+        }
+        
+        .suggestions-section {
+            background: rgba(212, 165, 116, 0.1);
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+        
+        .suggestions-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .suggestion-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .suggestion-priority {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .priority-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+        
+        .priority-medium {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fdba74;
+        }
+        
+        .suggestion-message {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.875rem;
             line-height: 1.6;
         }
         
@@ -431,35 +550,6 @@
             gap: 0.75rem;
         }
         
-        /* Info Banner */
-        .info-banner {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            border: 1px solid #bfdbfe;
-            border-radius: 16px;
-            padding: 1.25rem 1.75rem;
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-        
-        .info-icon {
-            color: #3b82f6;
-            font-size: 1.25rem;
-            margin-top: 0.125rem;
-        }
-        
-        .info-content {
-            font-size: 0.875rem;
-            color: #1e40af;
-            line-height: 1.6;
-        }
-        
-        .info-content strong {
-            font-weight: 600;
-            color: #1e3a8a;
-        }
-        
         /* Responsive */
         @media (max-width: 768px) {
             .container {
@@ -479,8 +569,8 @@
                 grid-template-columns: 1fr;
             }
             
-            .insights-grid {
-                grid-template-columns: 1fr;
+            .predictions-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .author-info {
@@ -490,6 +580,10 @@
             
             .author-stats {
                 justify-content: center;
+            }
+            
+            .algorithm-dashboard {
+                padding: 2rem 1.5rem;
             }
         }
     </style>
@@ -510,6 +604,96 @@
             </div>
         );
 
+        const XAlgorithmDashboard = ({ analysis }) => {
+            if (!analysis) return null;
+
+            return (
+                <div className="algorithm-dashboard">
+                    <div className="algorithm-header">
+                        <div className="algorithm-badge">X ALGORITHM</div>
+                        <h2 className="algorithm-title">알고리즘 분석</h2>
+                    </div>
+
+                    {/* Algorithm Score */}
+                    <div className="score-card">
+                        <div className="score-label">전체 알고리즘 점수</div>
+                        <div className="score-value">{analysis.algorithm_score}</div>
+                        <div className="score-description">
+                            예상 피드 위치: <strong>{analysis.feed_placement_estimate === 'top' ? '상위' : analysis.feed_placement_estimate === 'middle' ? '중간' : '하위'}</strong>
+                        </div>
+                    </div>
+
+                    {/* Top Predictions */}
+                    <div className="drivers-section">
+                        <h3 className="drivers-title">🎯 주요 점수 영향 요인</h3>
+                        {analysis.top_drivers.map((driver, idx) => (
+                            <div key={idx} className="driver-item">
+                                <div>
+                                    <div className="driver-name">
+                                        {driver.action === 'favorite' && '❤️ 좋아요'}
+                                        {driver.action === 'reply' && '💬 댓글'}
+                                        {driver.action === 'repost' && '🔄 리트윗'}
+                                        {driver.action === 'share' && '📤 공유'}
+                                        {driver.action === 'follow' && '👤 팔로우'}
+                                        {!['favorite', 'reply', 'repost', 'share', 'follow'].includes(driver.action) && driver.action}
+                                    </div>
+                                    <div style={{fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '0.25rem'}}>
+                                        확률: {driver.probability}%
+                                    </div>
+                                </div>
+                                <div className="driver-impact">
+                                    {driver.impact > 0 ? '+' : ''}{driver.impact}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Ranking Factors */}
+                    <div className="drivers-section">
+                        <h3 className="drivers-title">📊 랭킹 요소</h3>
+                        <div className="predictions-grid">
+                            <div className="prediction-item">
+                                <div className="prediction-label">Engagement Quality</div>
+                                <div className="prediction-value" style={{textTransform: 'capitalize'}}>
+                                    {analysis.ranking_factors.engagement_quality}
+                                </div>
+                            </div>
+                            <div className="prediction-item">
+                                <div className="prediction-label">Virality Potential</div>
+                                <div className="prediction-value" style={{textTransform: 'capitalize'}}>
+                                    {analysis.ranking_factors.virality_potential}
+                                </div>
+                            </div>
+                            <div className="prediction-item">
+                                <div className="prediction-label">Conversation Starter</div>
+                                <div className="prediction-value" style={{textTransform: 'capitalize'}}>
+                                    {analysis.ranking_factors.conversation_starter}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Optimization Suggestions */}
+                    {analysis.optimization_suggestions && analysis.optimization_suggestions.length > 0 && (
+                        <div className="suggestions-section">
+                            <div className="suggestions-title">
+                                <span>💡</span>
+                                <span>최적화 제안</span>
+                            </div>
+                            {analysis.optimization_suggestions.map((suggestion, idx) => (
+                                <div key={idx} className="suggestion-item">
+                                    <span className={`suggestion-priority priority-${suggestion.priority}`}>
+                                        {suggestion.priority}
+                                    </span>
+                                    <div className="suggestion-message">{suggestion.message}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
         const App = () => {
             const [tweetUrl, setTweetUrl] = useState('');
             const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -525,75 +709,6 @@
                 if (num >= 1000000) return `${(num/1000000).toFixed(1)}M`;
                 if (num >= 1000) return `${(num/1000).toFixed(1)}K`;
                 return num.toString();
-            };
-
-            const fetchTweetData = async (tweetId) => {
-                try {
-                    const nitterUrl = `https://nitter.net/i/status/${tweetId}`;
-                    const corsProxy = 'https://api.allorigins.win/raw?url=';
-                    const response = await fetch(corsProxy + encodeURIComponent(nitterUrl));
-                    
-                    if (!response.ok) throw new Error('Failed to fetch tweet');
-                    
-                    const html = await response.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    
-                    const contentElem = doc.querySelector('.tweet-content');
-                    const content = contentElem ? contentElem.textContent.trim() : '트윗 내용을 가져올 수 없습니다';
-                    
-                    const fullnameElem = doc.querySelector('.fullname');
-                    const usernameElem = doc.querySelector('.username');
-                    const avatarElem = doc.querySelector('.avatar img');
-                    
-                    const fullname = fullnameElem ? fullnameElem.textContent.trim() : 'Unknown User';
-                    const username = usernameElem ? usernameElem.textContent.trim() : '@unknown';
-                    const avatar = avatarElem ? 'https://nitter.net' + avatarElem.src : 'https://via.placeholder.com/80/d4a574/ffffff?text=U';
-                    
-                    const statsElems = doc.querySelectorAll('.icon-container');
-                    let comments = 0, retweets = 0, likes = 0;
-                    
-                    statsElems.forEach(stat => {
-                        const text = stat.textContent.trim();
-                        const num = parseInt(text.replace(/[^\d]/g, '')) || 0;
-                        const title = stat.getAttribute('title') || '';
-                        
-                        if (title.toLowerCase().includes('comment')) comments = num;
-                        else if (title.toLowerCase().includes('retweet')) retweets = num;
-                        else if (title.toLowerCase().includes('like')) likes = num;
-                    });
-                    
-                    const timeElem = doc.querySelector('.tweet-date a');
-                    const timestamp = timeElem ? timeElem.textContent.trim() : new Date().toLocaleDateString('ko-KR');
-                    
-                    const estimatedViews = Math.max(likes * 50, 1000);
-                    const totalEngagement = comments + retweets + likes;
-                    const engagementRate = ((totalEngagement / estimatedViews) * 100).toFixed(2);
-                    
-                    return {
-                        content,
-                        author: {
-                            name: fullname,
-                            handle: username,
-                            followers: 'N/A',
-                            avatar
-                        },
-                        metrics: {
-                            views: formatNumber(estimatedViews),
-                            likes: formatNumber(likes),
-                            retweets: formatNumber(retweets),
-                            replies: formatNumber(comments),
-                            bookmarks: formatNumber(Math.floor(likes * 0.1)),
-                            quotes: formatNumber(Math.floor(retweets * 0.15))
-                        },
-                        engagementRate: `${engagementRate}%`,
-                        timestamp,
-                        impressionsPerFollower: 'N/A'
-                    };
-                } catch (error) {
-                    console.error('Fetch error:', error);
-                    return null;
-                }
             };
 
             const handleAnalyze = async () => {
@@ -617,33 +732,82 @@
                 setError('');
                 
                 try {
-                    const data = await fetchTweetData(tweetId);
+                    // 백엔드 API 호출 (서버리스 환경에서는 fallback)
+                    const API_URL = 'http://localhost:5000/api/analyze';
                     
-                    if (data) {
-                        setTweetData(data);
-                    } else {
-                        setError('트윗 데이터를 가져올 수 없습니다. 샘플 데이터를 표시합니다.');
-                        setTweetData({
-                            content: "샘플 트윗입니다. 실제 데이터를 가져올 수 없어 예시 데이터를 보여드립니다.",
-                            author: {
-                                name: "Sample User",
-                                handle: "@sampleuser",
-                                followers: "10.5K",
-                                avatar: "https://via.placeholder.com/80/d4a574/ffffff?text=SU"
+                    try {
+                        const response = await fetch(API_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
                             },
-                            metrics: {
-                                views: "150.2K",
-                                likes: "2.5K",
-                                retweets: "456",
-                                replies: "89",
-                                bookmarks: "234",
-                                quotes: "67"
-                            },
-                            engagementRate: "2.15%",
-                            timestamp: new Date().toLocaleDateString('ko-KR'),
-                            impressionsPerFollower: "14.3"
+                            body: JSON.stringify({ url: tweetUrl })
                         });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            setTweetData(result.data);
+                            setIsAnalyzing(false);
+                            return;
+                        }
+                    } catch (backendError) {
+                        console.log('Backend not available, using mock data');
                     }
+                    
+                    // Fallback to mock data
+                    setError('백엔드 서버에 연결할 수 없어 샘플 데이터를 표시합니다.');
+                    const mockData = {
+                        content: "Just analyzed the latest crypto market trends. The data shows interesting patterns in DeFi adoption across different demographics. 📊🚀 #Crypto #DeFi #Web3",
+                        author: {
+                            name: "Crypto Analyst",
+                            handle: "@cryptoanalyst",
+                            followers: "125.3K",
+                            avatar: "https://via.placeholder.com/80/d4a574/ffffff?text=CA"
+                        },
+                        metrics: {
+                            views: "2.4M",
+                            likes: "18.5K",
+                            retweets: "3.2K",
+                            replies: "892",
+                            bookmarks: "1.4K",
+                            quotes: "456"
+                        },
+                        engagementRate: "2.89%",
+                        timestamp: new Date().toLocaleDateString('ko-KR'),
+                        impressionsPerFollower: "19.2",
+                        algorithm_analysis: {
+                            algorithm_score: 78.5,
+                            predictions: {
+                                favorite: 0.77,
+                                reply: 0.037,
+                                repost: 0.133,
+                                quote: 0.019,
+                                click: 0.94
+                            },
+                            top_drivers: [
+                                { action: 'reply', impact: 0.5, probability: 3.7 },
+                                { action: 'repost', impact: 0.93, probability: 13.3 },
+                                { action: 'favorite', impact: 0.39, probability: 77 }
+                            ],
+                            ranking_factors: {
+                                engagement_quality: 'high',
+                                virality_potential: 'medium',
+                                conversation_starter: 'yes',
+                                author_diversity_impact: 'neutral'
+                            },
+                            feed_placement_estimate: 'top',
+                            optimization_suggestions: [
+                                {
+                                    type: 'engagement',
+                                    message: '질문이나 의견을 요청하여 댓글을 늘리세요 (가중치 13.5x)',
+                                    priority: 'high'
+                                }
+                            ]
+                        }
+                    };
+                    setTweetData(mockData);
+                    
                 } catch (error) {
                     console.error('Analysis error:', error);
                     setError('분석 중 오류가 발생했습니다');
@@ -664,16 +828,7 @@
                             <div className="logo-icon">𝕏</div>
                             <span>UnitTX Analytics</span>
                         </div>
-                        <p className="subtitle">트윗 성과를 한눈에 분석하세요</p>
-                    </div>
-
-                    {/* Info Banner */}
-                    <div className="info-banner">
-                        <div className="info-icon">ℹ️</div>
-                        <div className="info-content">
-                            <strong>서버리스 버전:</strong> 별도 백엔드 없이 작동합니다. 
-                            일부 지표는 추정치이며, 서비스 상태에 따라 데이터를 가져오지 못할 수 있습니다.
-                        </div>
+                        <p className="subtitle">X 알고리즘 기반 트윗 분석</p>
                     </div>
 
                     {/* Input Card */}
@@ -764,36 +919,10 @@
                                 </div>
                             </div>
 
-                            {/* Insights Section */}
-                            <div className="insights-card">
-                                <h3 className="insights-title">
-                                    <span>💡</span>
-                                    <span>인사이트</span>
-                                </h3>
-                                <div className="insights-grid">
-                                    <div className="insight-item">
-                                        <div className="insight-icon green">📈</div>
-                                        <div className="insight-content">
-                                            <h4>높은 도달률</h4>
-                                            <p>추정 조회수 기준으로 분석한 결과입니다</p>
-                                        </div>
-                                    </div>
-                                    <div className="insight-item">
-                                        <div className="insight-icon blue">👥</div>
-                                        <div className="insight-content">
-                                            <h4>활발한 참여</h4>
-                                            <p>참여율 {tweetData.engagementRate}</p>
-                                        </div>
-                                    </div>
-                                    <div className="insight-item">
-                                        <div className="insight-icon purple">🔥</div>
-                                        <div className="insight-content">
-                                            <h4>확산 지표</h4>
-                                            <p>{tweetData.metrics.retweets} 리트윗</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {/* X Algorithm Dashboard */}
+                            {tweetData.algorithm_analysis && (
+                                <XAlgorithmDashboard analysis={tweetData.algorithm_analysis} />
+                            )}
                         </>
                     )}
 
@@ -803,7 +932,7 @@
                             <div className="empty-icon">📊</div>
                             <h3 className="empty-title">트윗을 분석해보세요</h3>
                             <p className="empty-description">
-                                위 입력창에 Twitter/X 트윗 링크를 붙여넣고 분석 버튼을 클릭하세요
+                                X의 공개 알고리즘을 기반으로 트윗의 성과를 예측하고 최적화 방법을 제안합니다
                             </p>
                         </div>
                     )}
