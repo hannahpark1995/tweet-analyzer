@@ -1,0 +1,817 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnitTX Tweet Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #faf8f6 0%, #f5f1ec 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #2c2319;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        /* Header Styles */
+        .header {
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c2319;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #d4a574 0%, #b8935f 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.125rem;
+            color: #6b5d4f;
+            font-weight: 400;
+        }
+        
+        /* Input Card */
+        .input-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            margin-bottom: 3rem;
+            border: 1px solid rgba(212, 165, 116, 0.1);
+        }
+        
+        .input-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .input-field {
+            flex: 1;
+            padding: 1.25rem 1.75rem;
+            border: 2px solid #ede8e3;
+            border-radius: 16px;
+            font-size: 1rem;
+            color: #2c2319;
+            background: #faf8f6;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #d4a574;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(212, 165, 116, 0.1);
+        }
+        
+        .input-field::placeholder {
+            color: #a39888;
+        }
+        
+        .analyze-btn {
+            padding: 1.25rem 2.5rem;
+            background: linear-gradient(135deg, #d4a574 0%, #c09764 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba(212, 165, 116, 0.3);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(212, 165, 116, 0.4);
+        }
+        
+        .analyze-btn:active {
+            transform: translateY(0);
+        }
+        
+        .analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Loading Animation */
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Author Section */
+        .author-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(212, 165, 116, 0.1);
+        }
+        
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 3px solid #f5f1ec;
+        }
+        
+        .author-details h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c2319;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .verified-badge {
+            color: #d4a574;
+            font-size: 1.125rem;
+        }
+        
+        .author-handle {
+            color: #6b5d4f;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .author-stats {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.875rem;
+            color: #8b7d6f;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stat-value {
+            color: #2c2319;
+            font-weight: 600;
+        }
+        
+        /* Tweet Content */
+        .tweet-content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(212, 165, 116, 0.1);
+        }
+        
+        .content-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #a39888;
+            margin-bottom: 1rem;
+        }
+        
+        .tweet-text {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #2c2319;
+        }
+        
+        /* Metrics Grid */
+        .metrics-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2c2319;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(212, 165, 116, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #d4a574 0%, #c09764 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+        
+        .metric-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #f5f1ec 0%, #ede8e3 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: #d4a574;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c2319;
+            letter-spacing: -0.02em;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #8b7d6f;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+        
+        /* Insights Section */
+        .insights-card {
+            background: linear-gradient(135deg, #fff9f2 0%, #faf6f0 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(212, 165, 116, 0.15);
+        }
+        
+        .insights-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c2319;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .insight-item {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+        }
+        
+        .insight-icon {
+            width: 56px;
+            height: 56px;
+            background: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .insight-icon.green { color: #4ade80; }
+        .insight-icon.blue { color: #60a5fa; }
+        .insight-icon.purple { color: #c084fc; }
+        
+        .insight-content h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #2c2319;
+            margin-bottom: 0.5rem;
+        }
+        
+        .insight-content p {
+            font-size: 0.875rem;
+            color: #6b5d4f;
+            line-height: 1.6;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+        
+        .empty-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #f5f1ec 0%, #ede8e3 100%);
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #d4a574;
+            margin-bottom: 2rem;
+        }
+        
+        .empty-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2c2319;
+            margin-bottom: 0.75rem;
+        }
+        
+        .empty-description {
+            font-size: 1.125rem;
+            color: #6b5d4f;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Error Message */
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-top: 1rem;
+            color: #991b1b;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #bfdbfe;
+            border-radius: 16px;
+            padding: 1.25rem 1.75rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .info-icon {
+            color: #3b82f6;
+            font-size: 1.25rem;
+            margin-top: 0.125rem;
+        }
+        
+        .info-content {
+            font-size: 0.875rem;
+            color: #1e40af;
+            line-height: 1.6;
+        }
+        
+        .info-content strong {
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1.25rem;
+            }
+            
+            .input-wrapper {
+                flex-direction: column;
+            }
+            
+            .analyze-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .author-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .author-stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const MetricCard = ({ icon, label, value }) => (
+            <div className="metric-card">
+                <div className="metric-header">
+                    <div className="metric-icon">{icon}</div>
+                    <div className="metric-value">{value}</div>
+                </div>
+                <div className="metric-label">{label}</div>
+            </div>
+        );
+
+        const App = () => {
+            const [tweetUrl, setTweetUrl] = useState('');
+            const [isAnalyzing, setIsAnalyzing] = useState(false);
+            const [tweetData, setTweetData] = useState(null);
+            const [error, setError] = useState('');
+
+            const extractTweetId = (url) => {
+                const match = url.match(/status\/(\d+)/);
+                return match ? match[1] : null;
+            };
+
+            const formatNumber = (num) => {
+                if (num >= 1000000) return `${(num/1000000).toFixed(1)}M`;
+                if (num >= 1000) return `${(num/1000).toFixed(1)}K`;
+                return num.toString();
+            };
+
+            const fetchTweetData = async (tweetId) => {
+                try {
+                    const nitterUrl = `https://nitter.net/i/status/${tweetId}`;
+                    const corsProxy = 'https://api.allorigins.win/raw?url=';
+                    const response = await fetch(corsProxy + encodeURIComponent(nitterUrl));
+                    
+                    if (!response.ok) throw new Error('Failed to fetch tweet');
+                    
+                    const html = await response.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    const contentElem = doc.querySelector('.tweet-content');
+                    const content = contentElem ? contentElem.textContent.trim() : '트윗 내용을 가져올 수 없습니다';
+                    
+                    const fullnameElem = doc.querySelector('.fullname');
+                    const usernameElem = doc.querySelector('.username');
+                    const avatarElem = doc.querySelector('.avatar img');
+                    
+                    const fullname = fullnameElem ? fullnameElem.textContent.trim() : 'Unknown User';
+                    const username = usernameElem ? usernameElem.textContent.trim() : '@unknown';
+                    const avatar = avatarElem ? 'https://nitter.net' + avatarElem.src : 'https://via.placeholder.com/80/d4a574/ffffff?text=U';
+                    
+                    const statsElems = doc.querySelectorAll('.icon-container');
+                    let comments = 0, retweets = 0, likes = 0;
+                    
+                    statsElems.forEach(stat => {
+                        const text = stat.textContent.trim();
+                        const num = parseInt(text.replace(/[^\d]/g, '')) || 0;
+                        const title = stat.getAttribute('title') || '';
+                        
+                        if (title.toLowerCase().includes('comment')) comments = num;
+                        else if (title.toLowerCase().includes('retweet')) retweets = num;
+                        else if (title.toLowerCase().includes('like')) likes = num;
+                    });
+                    
+                    const timeElem = doc.querySelector('.tweet-date a');
+                    const timestamp = timeElem ? timeElem.textContent.trim() : new Date().toLocaleDateString('ko-KR');
+                    
+                    const estimatedViews = Math.max(likes * 50, 1000);
+                    const totalEngagement = comments + retweets + likes;
+                    const engagementRate = ((totalEngagement / estimatedViews) * 100).toFixed(2);
+                    
+                    return {
+                        content,
+                        author: {
+                            name: fullname,
+                            handle: username,
+                            followers: 'N/A',
+                            avatar
+                        },
+                        metrics: {
+                            views: formatNumber(estimatedViews),
+                            likes: formatNumber(likes),
+                            retweets: formatNumber(retweets),
+                            replies: formatNumber(comments),
+                            bookmarks: formatNumber(Math.floor(likes * 0.1)),
+                            quotes: formatNumber(Math.floor(retweets * 0.15))
+                        },
+                        engagementRate: `${engagementRate}%`,
+                        timestamp,
+                        impressionsPerFollower: 'N/A'
+                    };
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    return null;
+                }
+            };
+
+            const handleAnalyze = async () => {
+                if (!tweetUrl.trim()) {
+                    setError('트윗 링크를 입력해주세요');
+                    return;
+                }
+
+                if (!tweetUrl.includes('twitter.com') && !tweetUrl.includes('x.com')) {
+                    setError('올바른 Twitter/X 링크를 입력해주세요');
+                    return;
+                }
+
+                const tweetId = extractTweetId(tweetUrl);
+                if (!tweetId) {
+                    setError('트윗 ID를 찾을 수 없습니다');
+                    return;
+                }
+
+                setIsAnalyzing(true);
+                setError('');
+                
+                try {
+                    const data = await fetchTweetData(tweetId);
+                    
+                    if (data) {
+                        setTweetData(data);
+                    } else {
+                        setError('트윗 데이터를 가져올 수 없습니다. 샘플 데이터를 표시합니다.');
+                        setTweetData({
+                            content: "샘플 트윗입니다. 실제 데이터를 가져올 수 없어 예시 데이터를 보여드립니다.",
+                            author: {
+                                name: "Sample User",
+                                handle: "@sampleuser",
+                                followers: "10.5K",
+                                avatar: "https://via.placeholder.com/80/d4a574/ffffff?text=SU"
+                            },
+                            metrics: {
+                                views: "150.2K",
+                                likes: "2.5K",
+                                retweets: "456",
+                                replies: "89",
+                                bookmarks: "234",
+                                quotes: "67"
+                            },
+                            engagementRate: "2.15%",
+                            timestamp: new Date().toLocaleDateString('ko-KR'),
+                            impressionsPerFollower: "14.3"
+                        });
+                    }
+                } catch (error) {
+                    console.error('Analysis error:', error);
+                    setError('분석 중 오류가 발생했습니다');
+                } finally {
+                    setIsAnalyzing(false);
+                }
+            };
+
+            const handleKeyPress = (e) => {
+                if (e.key === 'Enter') handleAnalyze();
+            };
+
+            return (
+                <div className="container">
+                    {/* Header */}
+                    <div className="header">
+                        <div className="logo">
+                            <div className="logo-icon">𝕏</div>
+                            <span>UnitTX Analytics</span>
+                        </div>
+                        <p className="subtitle">트윗 성과를 한눈에 분석하세요</p>
+                    </div>
+
+                    {/* Info Banner */}
+                    <div className="info-banner">
+                        <div className="info-icon">ℹ️</div>
+                        <div className="info-content">
+                            <strong>서버리스 버전:</strong> 별도 백엔드 없이 작동합니다. 
+                            일부 지표는 추정치이며, 서비스 상태에 따라 데이터를 가져오지 못할 수 있습니다.
+                        </div>
+                    </div>
+
+                    {/* Input Card */}
+                    <div className="input-card">
+                        <div className="input-wrapper">
+                            <input
+                                type="text"
+                                value={tweetUrl}
+                                onChange={(e) => {
+                                    setTweetUrl(e.target.value);
+                                    setError('');
+                                }}
+                                onKeyPress={handleKeyPress}
+                                placeholder="트윗 링크를 입력하세요 (예: https://twitter.com/user/status/123...)"
+                                className="input-field"
+                            />
+                            <button
+                                onClick={handleAnalyze}
+                                disabled={isAnalyzing}
+                                className="analyze-btn"
+                            >
+                                {isAnalyzing ? (
+                                    <>
+                                        <div className="loading-spinner"></div>
+                                        <span>분석 중...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span>📊</span>
+                                        <span>분석하기</span>
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                        {error && (
+                            <div className="error-message">
+                                <span>⚠️</span>
+                                <span>{error}</span>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Results Section */}
+                    {tweetData && (
+                        <>
+                            {/* Author Card */}
+                            <div className="author-card">
+                                <div className="author-info">
+                                    <img src={tweetData.author.avatar} alt={tweetData.author.name} className="avatar" />
+                                    <div className="author-details">
+                                        <h3>
+                                            {tweetData.author.name}
+                                            <span className="verified-badge">✓</span>
+                                        </h3>
+                                        <div className="author-handle">{tweetData.author.handle}</div>
+                                        <div className="author-stats">
+                                            <div className="stat-item">
+                                                <span>👥</span>
+                                                <span>팔로워: <span className="stat-value">{tweetData.author.followers}</span></span>
+                                            </div>
+                                            <div className="stat-item">
+                                                <span>🕐</span>
+                                                <span>{tweetData.timestamp}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Tweet Content */}
+                            <div className="tweet-content-card">
+                                <div className="content-label">트윗 내용</div>
+                                <div className="tweet-text">{tweetData.content}</div>
+                            </div>
+
+                            {/* Metrics Grid */}
+                            <div className="metrics-section">
+                                <h2 className="section-title">성과 지표</h2>
+                                <div className="metrics-grid">
+                                    <MetricCard icon="👁️" label="조회수" value={tweetData.metrics.views} />
+                                    <MetricCard icon="❤️" label="좋아요" value={tweetData.metrics.likes} />
+                                    <MetricCard icon="🔄" label="리트윗" value={tweetData.metrics.retweets} />
+                                    <MetricCard icon="💬" label="댓글" value={tweetData.metrics.replies} />
+                                    <MetricCard icon="🔖" label="북마크" value={tweetData.metrics.bookmarks} />
+                                    <MetricCard icon="💭" label="인용 트윗" value={tweetData.metrics.quotes} />
+                                    <MetricCard icon="📊" label="참여율" value={tweetData.engagementRate} />
+                                    <MetricCard icon="👤" label="팔로워당 노출" value={tweetData.impressionsPerFollower} />
+                                </div>
+                            </div>
+
+                            {/* Insights Section */}
+                            <div className="insights-card">
+                                <h3 className="insights-title">
+                                    <span>💡</span>
+                                    <span>인사이트</span>
+                                </h3>
+                                <div className="insights-grid">
+                                    <div className="insight-item">
+                                        <div className="insight-icon green">📈</div>
+                                        <div className="insight-content">
+                                            <h4>높은 도달률</h4>
+                                            <p>추정 조회수 기준으로 분석한 결과입니다</p>
+                                        </div>
+                                    </div>
+                                    <div className="insight-item">
+                                        <div className="insight-icon blue">👥</div>
+                                        <div className="insight-content">
+                                            <h4>활발한 참여</h4>
+                                            <p>참여율 {tweetData.engagementRate}</p>
+                                        </div>
+                                    </div>
+                                    <div className="insight-item">
+                                        <div className="insight-icon purple">🔥</div>
+                                        <div className="insight-content">
+                                            <h4>확산 지표</h4>
+                                            <p>{tweetData.metrics.retweets} 리트윗</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {/* Empty State */}
+                    {!tweetData && !isAnalyzing && (
+                        <div className="empty-state">
+                            <div className="empty-icon">📊</div>
+                            <h3 className="empty-title">트윗을 분석해보세요</h3>
+                            <p className="empty-description">
+                                위 입력창에 Twitter/X 트윗 링크를 붙여넣고 분석 버튼을 클릭하세요
+                            </p>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
